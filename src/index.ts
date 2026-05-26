@@ -1,6 +1,7 @@
 // Main entry point - simple HTTP server
 import * as http from 'http';
-import { register, login, getProfile, updateProfile } from './user';
+import { register, login } from './auth';
+import { getProfile, updateProfile } from './profile';
 import { createTask, getTask, listTasks, updateTask } from './task';
 import { config } from './config';
 

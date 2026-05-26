@@ -1,5 +1,5 @@
 // Task management module
-import { verifyToken } from './user';
+import { verifyToken } from './auth';
 
 interface Task {
   id: number;
