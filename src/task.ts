@@ -72,9 +72,11 @@ export function listTasks(status?: string): any[] {
   return tasks;
 }
 
-// Buggy function - doesn't check if task exists before assigning
 export function assignTask(taskId: number, userId: number): any {
   const task = tasks.find(t => t.id === taskId);
-  task!.assigneeId = userId;  // will crash if task not found
+  if (!task) {
+    return { error: "Task not found" };
+  }
+  task.assigneeId = userId;
   return task;
 }

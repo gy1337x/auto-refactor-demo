@@ -1,6 +1,6 @@
 // Main entry point - simple HTTP server
 import * as http from 'http';
-import { register, login } from './auth';
+import { register, login, verifyToken } from './auth';
 import { getProfile, updateProfile } from './profile';
 import { createTask, getTask, listTasks, updateTask } from './task';
 import { config } from './config';
@@ -55,10 +55,14 @@ const server = http.createServer(async (req, res) => {
 
     // Profile routes
     if (url.pathname === '/api/profile' && req.method === 'GET') {
-      const token = req.headers.authorization?.replace('Bearer ', '');
-      // FIXME: should verify token first
-      const userId = 1; // hardcoded
-      const result = getProfile(userId);
+      const token = req.headers.authorization?.replace('Bearer ', '') || '';
+      const payload = verifyToken(token);
+      if (!payload) {
+        res.writeHead(401, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Unauthorized' }));
+        return;
+      }
+      const result = getProfile(payload.id);
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify(result));
       return;
