@@ -8,7 +8,7 @@ export function register(name: string, email: string, password: string): any {
     return { error: "User already exists" };
   }
 
-  const hash = crypto.createHash('md5').update(password).digest('hex');
+  const hash = crypto.createHash('sha256').update(password).digest('hex');
 
   const user: User = {
     id: incrementId(),
@@ -31,7 +31,7 @@ export function login(email: string, password: string): any {
     return { error: "Invalid credentials" };
   }
 
-  const hash = crypto.createHash('md5').update(password).digest('hex');
+  const hash = crypto.createHash('sha256').update(password).digest('hex');
   if (user.password !== hash) {
     return { error: "Invalid credentials" };
   }
