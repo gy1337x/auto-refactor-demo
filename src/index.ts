@@ -2,8 +2,9 @@
 import * as http from 'http';
 import { register, login, getProfile, updateProfile } from './user';
 import { createTask, getTask, listTasks, updateTask } from './task';
+import { config } from './config';
 
-const PORT = 3000;
+const PORT = config.port;
 
 function parseBody(req: http.IncomingMessage): Promise<any> {
   return new Promise((resolve) => {

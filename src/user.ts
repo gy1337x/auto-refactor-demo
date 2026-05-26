@@ -1,13 +1,7 @@
 // User module - handles everything related to users
-// TODO: this file is getting too big, should split it up
 
 import * as crypto from 'crypto';
-
-// Hardcoded config - should be in env
-const JWT_SECRET = "super-secret-key-12345";
-const TOKEN_EXPIRY = 3600;
-const DB_HOST = "localhost";
-const DB_PORT = 5432;
+import { config } from './config';
 
 interface User {
   id: number;
@@ -75,7 +69,7 @@ export function generateToken(user: User): string {
     id: user.id,
     email: user.email,
     role: user.role,
-    exp: Date.now() + TOKEN_EXPIRY * 1000
+    exp: Date.now() + config.tokenExpiry * 1000
   };
   return Buffer.from(JSON.stringify(payload)).toString('base64');
 }
@@ -166,5 +160,5 @@ type SessionInfo = {
 };
 
 export function getDbConnectionInfo(): string {
-  return `postgresql://${DB_HOST}:${DB_PORT}/taskmanager`;
+  return `postgresql://${config.dbHost}:${config.dbPort}/taskmanager`;
 }
